@@ -1,0 +1,234 @@
+basePath: /
+definitions:
+  api.CreateDocumentRequest:
+    properties:
+      author:
+        description: The author of the document
+        example: Author Name
+        type: string
+      content:
+        description: The content of the document
+        example: This is the content of the document.
+        type: string
+      description:
+        description: The description of the document
+        example: This is a sample document description.
+        type: string
+      format:
+        description: The format of the document
+        example: markdown
+        type: string
+      tags:
+        description: The tags associated with the document
+        example:
+        - tag1
+        - tag2
+        items:
+          type: string
+        type: array
+      title:
+        description: The title of the document
+        example: Document Title
+        type: string
+    type: object
+  api.CreateDocumentResponse:
+    properties:
+      created_at:
+        description: The date and time when the document was created
+        example: "2023-10-01T12:00:00Z"
+        type: string
+      id:
+        description: The ID of the created document
+        example: "12345"
+        type: string
+      title:
+        description: The title of the created document
+        example: Document Title
+        type: string
+    type: object
+  api.DocumentResponse:
+    properties:
+      author:
+        description: The author of the document
+        example: Author Name
+        type: string
+      content:
+        description: The content of the document
+        example: This is the content of the document.
+        type: string
+      created_at:
+        description: The date and time when the document was created
+        example: "2023-10-01T12:00:00Z"
+        type: string
+      description:
+        description: The description of the document
+        example: This is a sample document description.
+        type: string
+      format:
+        description: The format of the document
+        example: markdown
+        type: string
+      id:
+        description: The ID of the document
+        example: "12345"
+        type: string
+      tags:
+        description: The tags associated with the document
+        example:
+        - tag1
+        - tag2
+        items:
+          type: string
+        type: array
+      title:
+        description: The title of the document
+        example: Document Title
+        type: string
+      updated_at:
+        description: The date and time when the document was last updated
+        example: "2023-10-01T12:00:00Z"
+        type: string
+    type: object
+  api.ErrorResponse:
+    properties:
+      message:
+        example: Internal Server Error
+        type: string
+    type: object
+  api.StatusResponse:
+    properties:
+      status:
+        description: The status of the service
+        example: ok
+        type: string
+      version:
+        description: The version of the service
+        example: v0
+        type: string
+    type: object
+  api.ValidationErrorResponse:
+    properties:
+      message:
+        example: Error validating parameter
+        type: string
+      param:
+        example: XXX
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: jaguilerapuerta@gmail.com
+    name: Javier Aguilera
+  description: This is the API documentation for the Grant Service.
+  title: Grant Service API
+  version: "1.0"
+paths:
+  /api/v0/documents:
+    get:
+      description: Returns a list of documents based on the provided filter.
+      operationId: list-documents
+      parameters:
+      - description: Filter by author
+        example: '"Author Name"'
+        in: query
+        name: author
+        type: string
+      - description: Filter by tags
+        example: '"tag1,tag2"'
+        in: query
+        name: tags
+        type: string
+      - description: Filter by format
+        example: '"markdown"'
+        in: query
+        name: format
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/api.DocumentResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: List documents
+      tags:
+      - documents
+    post:
+      consumes:
+      - application/json
+      description: Creates a new document.
+      operationId: create-document
+      parameters:
+      - description: Document to create
+        in: body
+        name: document
+        required: true
+        schema:
+          $ref: '#/definitions/api.CreateDocumentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/api.CreateDocumentResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Create document
+      tags:
+      - documents
+  /api/v0/documents/{id}:
+    get:
+      description: Returns a document by its ID.
+      operationId: read-document
+      parameters:
+      - description: Document ID
+        example: '"6ba7b810-9dad-11d1-80b4-00c04fd430c8"'
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.DocumentResponse'
+        "400":
+          description: Invalid device ID format
+          schema:
+            $ref: '#/definitions/api.ValidationErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Read document
+      tags:
+      - documents
+  /api/v0/health:
+    get:
+      description: Returns the health status of the service.
+      operationId: health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.StatusResponse'
+      summary: Health check
+      tags:
+      - health
+schemes:
+- http
+swagger: "2.0"

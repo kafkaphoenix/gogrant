@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "gogrant",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

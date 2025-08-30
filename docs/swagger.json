@@ -1,0 +1,331 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the API documentation for the Grant Service.",
+        "title": "Grant Service API",
+        "contact": {
+            "name": "Javier Aguilera",
+            "email": "jaguilerapuerta@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/v0/documents": {
+            "get": {
+                "description": "Returns a list of documents based on the provided filter.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "documents"
+                ],
+                "summary": "List documents",
+                "operationId": "list-documents",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"Author Name\"",
+                        "description": "Filter by author",
+                        "name": "author",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"tag1,tag2\"",
+                        "description": "Filter by tags",
+                        "name": "tags",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "\"markdown\"",
+                        "description": "Filter by format",
+                        "name": "format",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/api.DocumentResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new document.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "documents"
+                ],
+                "summary": "Create document",
+                "operationId": "create-document",
+                "parameters": [
+                    {
+                        "description": "Document to create",
+                        "name": "document",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.CreateDocumentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/api.CreateDocumentResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v0/documents/{id}": {
+            "get": {
+                "description": "Returns a document by its ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "documents"
+                ],
+                "summary": "Read document",
+                "operationId": "read-document",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"6ba7b810-9dad-11d1-80b4-00c04fd430c8\"",
+                        "description": "Document ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.DocumentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid device ID format",
+                        "schema": {
+                            "$ref": "#/definitions/api.ValidationErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v0/health": {
+            "get": {
+                "description": "Returns the health status of the service.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "Health check",
+                "operationId": "health",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.StatusResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.CreateDocumentRequest": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "description": "The author of the document",
+                    "type": "string",
+                    "example": "Author Name"
+                },
+                "content": {
+                    "description": "The content of the document",
+                    "type": "string",
+                    "example": "This is the content of the document."
+                },
+                "description": {
+                    "description": "The description of the document",
+                    "type": "string",
+                    "example": "This is a sample document description."
+                },
+                "format": {
+                    "description": "The format of the document",
+                    "type": "string",
+                    "example": "markdown"
+                },
+                "tags": {
+                    "description": "The tags associated with the document",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "tag1",
+                        "tag2"
+                    ]
+                },
+                "title": {
+                    "description": "The title of the document",
+                    "type": "string",
+                    "example": "Document Title"
+                }
+            }
+        },
+        "api.CreateDocumentResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "The date and time when the document was created",
+                    "type": "string",
+                    "example": "2023-10-01T12:00:00Z"
+                },
+                "id": {
+                    "description": "The ID of the created document",
+                    "type": "string",
+                    "example": "12345"
+                },
+                "title": {
+                    "description": "The title of the created document",
+                    "type": "string",
+                    "example": "Document Title"
+                }
+            }
+        },
+        "api.DocumentResponse": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "description": "The author of the document",
+                    "type": "string",
+                    "example": "Author Name"
+                },
+                "content": {
+                    "description": "The content of the document",
+                    "type": "string",
+                    "example": "This is the content of the document."
+                },
+                "created_at": {
+                    "description": "The date and time when the document was created",
+                    "type": "string",
+                    "example": "2023-10-01T12:00:00Z"
+                },
+                "description": {
+                    "description": "The description of the document",
+                    "type": "string",
+                    "example": "This is a sample document description."
+                },
+                "format": {
+                    "description": "The format of the document",
+                    "type": "string",
+                    "example": "markdown"
+                },
+                "id": {
+                    "description": "The ID of the document",
+                    "type": "string",
+                    "example": "12345"
+                },
+                "tags": {
+                    "description": "The tags associated with the document",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "tag1",
+                        "tag2"
+                    ]
+                },
+                "title": {
+                    "description": "The title of the document",
+                    "type": "string",
+                    "example": "Document Title"
+                },
+                "updated_at": {
+                    "description": "The date and time when the document was last updated",
+                    "type": "string",
+                    "example": "2023-10-01T12:00:00Z"
+                }
+            }
+        },
+        "api.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                }
+            }
+        },
+        "api.StatusResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "The status of the service",
+                    "type": "string",
+                    "example": "ok"
+                },
+                "version": {
+                    "description": "The version of the service",
+                    "type": "string",
+                    "example": "v0"
+                }
+            }
+        },
+        "api.ValidationErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Error validating parameter"
+                },
+                "param": {
+                    "type": "string",
+                    "example": "XXX"
+                }
+            }
+        }
+    }
+}

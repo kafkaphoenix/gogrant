@@ -1,0 +1,150 @@
+version: "2"
+linters:
+  enable:
+    - asciicheck
+    - bodyclose
+    - copyloopvar
+    - dogsled
+    - durationcheck
+    - err113
+    - errorlint
+    - exhaustive
+    - funlen
+    - gochecknoglobals
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godox
+    - goprintffuncname
+    - gosec
+    - iface
+    - inamedparam
+    - lll
+    - misspell
+    - nestif
+    - nolintlint
+    - perfsprint
+    - prealloc
+    - reassign
+    - revive
+    - sloglint
+    - staticcheck
+    - testifylint
+    - testpackage
+    - tparallel
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - whitespace
+    - wsl_v5
+  settings:
+    cyclop:
+      max-complexity: 15
+      package-average: 10
+    dupl:
+      threshold: 100
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+    errorlint:
+      errorf: true
+      asserts: true
+      comparison: true
+    exhaustive:
+      check:
+        - switch
+        - map
+      default-signifies-exhaustive: false
+    funlen:
+      lines: 80
+      statements: 50
+      ignore-comments: true
+    gocognit:
+      min-complexity: 25
+    goconst:
+      min-len: 2
+      min-occurrences: 2
+    gocritic:
+      settings:
+        captLocal:
+          paramsOnly: false
+        underef:
+          skipRecvDeref: false
+    gocyclo:
+      min-complexity: 25
+    godox:
+      keywords:
+        - BUG
+        - FIXME
+        - DEBUG
+    govet:
+      disable:
+        - fieldalignment
+      enable-all: true
+      settings:
+        shadow:
+          strict: true
+    inamedparam:
+      skip-single-param: true
+    lll:
+      line-length: 150
+    misspell:
+      locale: US
+    mnd:
+      ignored-functions:
+        - args.Error
+        - flag.Arg
+        - flag.Duration.*
+        - flag.Float.*
+        - flag.Int.*
+        - flag.Uint.*
+        - os.Chmod
+        - os.Mkdir.*
+        - os.OpenFile
+        - os.WriteFile
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    perfsprint:
+      strconcat: false
+    sloglint:
+      no-mixed-args: false
+      kv-only: true
+      attr-only: false
+      no-global: all
+      static-msg: true
+      no-raw-keys: false
+      key-naming-case: snake
+      args-on-sep-lines: true
+    whitespace:
+      multi-if: false
+      multi-func: false
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+      case-max-lines: 0
+    revive:
+      rules:
+      - name: var-naming
+        disabled: true
+  exclusions:
+    generated: lax
+    rules:
+      - linters:
+          - revive
+        text: 'exported: '
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    gofmt:
+      simplify: true
+      rewrite-rules:
+        - pattern: interface{}
+          replacement: any
+        - pattern: a[b:len(a)]
+          replacement: a[b:]

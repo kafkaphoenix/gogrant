@@ -1,0 +1,10 @@
+with-expecter: True # to assert the calls
+dir: "../../internal/mocks" # called from cmd/main.go
+mockname: "{{ .InterfaceName }}"
+outpkg: "mocks"
+filename: "mock_{{ .InterfaceName }}.go"
+all: True
+packages:
+  github.com/kafkaphoenix/gogrant/internal/domain/interfaces:
+    config:
+      recursive: False
