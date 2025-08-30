@@ -1,0 +1,5 @@
+p, USER, view_document
+
+p, ADMIN, create_document
+p, ADMIN, update_document
+p, ADMIN, delete_document

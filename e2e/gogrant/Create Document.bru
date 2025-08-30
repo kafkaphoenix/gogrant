@@ -1,0 +1,30 @@
+meta {
+  name: Create Document
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/v0/documents
+  body: json
+  auth: inherit
+}
+
+headers {
+  accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "author": "Author Name",
+    "content": "This is the content of the document.",
+    "description": "This is a sample document description.",
+    "format": "markdown",
+    "tags": [
+      "tag1",
+      "tag2"
+    ],
+    "title": "Document Title"
+  }
+}
